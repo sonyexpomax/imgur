@@ -1,0 +1,20 @@
+.post-list{
+    margin: 10px auto;
+    width: 100%;
+
+}
+.link-item{
+    color: #000000;
+    text-decoration: none;
+}
+
+.post-list h1{
+    width: 100%;
+    font-size: 20px;
+    text-align: center;
+    color: #ffffff;
+}
+.spin{
+    margin: 10px 50%!important;
+    display: inline-grid;
+}

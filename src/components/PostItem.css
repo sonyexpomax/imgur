@@ -1,0 +1,61 @@
+.post-current{
+    width: 60%;
+    margin: 10px auto;
+    padding: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    background-color: #ffffff;
+    border-radius: 5px;
+}
+.post-current h2{
+    font-size: 20px;
+    padding: 10px 0px;
+    margin: 0;
+    width: 85%;
+    text-align: left;
+}
+.post-current h3{
+    margin: 10px;
+    font-size: 18px;
+    width: 100%;
+    text-align: left;
+}
+.post-current h4{
+    padding: 10px 0;
+    margin: 0;
+}
+.post-current small{
+    float: right;
+    position: relative;
+    top: -30px;
+    color: #611412;
+    width: 15%;
+    text-align: right;
+}
+.post-current img{
+    width: 50%;
+    margin-left: 20%;
+    margin-top: 5px;
+    display: block;
+    padding: 0;
+}
+.post-current li{
+    border: solid 1px black;
+    border-radius: 10px;
+    margin: 5px 10px;
+    padding: 5px;
+}
+.post-current ul{
+    list-style: none;
+    padding: 0;
+}
+
+.post-current p{
+    margin: 0;
+}
+.post-current span{
+    margin: 10px 2px;
+    padding: 10px;
+    display: inline-block;
+    border-radius: 20px;
+    background-color: #8d978a;
+}
