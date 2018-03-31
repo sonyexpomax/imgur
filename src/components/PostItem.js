@@ -49,14 +49,14 @@ class PostItem extends Component {
 
         if(this.state.post.tags && this.state.post.tags[0]){
             tags = this.state.post.tags.map((item) => (
-                <span key={item.id}>{item.name}</span>
+                <span key={item.id + Math.random()} >{item.name}</span>
             ));
             tagsCount = this.state.post.tags.length;
         }
 
         if(this.state.post.images){
             images = this.state.post.images.map((item) => (
-                <img key={item.id} src={item.link} alt={item.link}/>
+                <img key={item.id+ Math.random()} src={item.link} alt={item.link}/>
             ))
         }
         else {
@@ -65,10 +65,10 @@ class PostItem extends Component {
 
         if(this.state.comments){
             comments = this.state.comments.map((item) => (
-                <li key={item.id}>
-                    <h4>{item.author}</h4>
-                    <small>{new Date(parseInt(item.datetime * 1000, 10)).toLocaleString()}</small>
-                    <p>{item.comment}</p>
+                <li key={item.id + Math.random()}>
+                    <h4 key={item.id + Math.random()}>{item.author}</h4>
+                    <small key={item.id + Math.random()}>{new Date(parseInt(item.datetime * 1000, 10)).toLocaleString()}</small>
+                    <p key={item.id + Math.random()}>{item.comment}</p>
                  </li>
             ))
         }

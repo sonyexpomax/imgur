@@ -6,12 +6,9 @@ class PostsListItem extends Component {
     render() {
 
         let currentPost = this.props.post;
-        //
-        // console.log(`%c currentPost `,  'color: black; background: orange');
-        // console.log(currentPost);
-
         let date = new Date(parseInt(currentPost.datetime * 1000, 10)).toLocaleString();
         let mainImage ;
+
         if(currentPost.images) {
 
             if(currentPost.images[0]){
@@ -27,11 +24,7 @@ class PostsListItem extends Component {
 
         return (
             <div key={currentPost.id} className={'post-item'}>
-                {/*{console.log(mainImage)}*/}
                 <div className = "img1" style={ { backgroundImage: `url(${mainImage})` } }></div>
-
-                {/*<img src={mainImage} alt=""/>*/}
-
                 <div className={'post-item-hover'}>
                     <h3>{currentPost.title}</h3>
                     <hr/>
