@@ -34,9 +34,6 @@ class PostsList extends Component {
                 <h1>Posts</h1>
                 <InfiniteScroll
                     pageStart={0}
-
-
-
                     loadMore={this.props.nextPage}
                     hasMore={this.state.isLoading}
                     loader={<Spinner name="ball-grid-pulse" color="steelblue" className={'spin'}/>}
