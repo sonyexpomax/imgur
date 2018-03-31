@@ -4,38 +4,27 @@ import { Provider } from "react-redux";
 import Posts from "./Posts";
 import './App.css'
 
-let topicId = 2;
 let pageNumber = 1;
 let tagFilter = null;
-let topicFilter = null;
 let isloading = false;
-// let request_url = 'https://api.imgur.com/3/topics/${topic}/time/1';
 
-const url_post_list = 'https://api.imgur.com/3/topics/defaults';
 const url_tag_list = 'https://api.imgur.com/3/tags';
-// const url_posts = 'https://api.imgur.com/3/gallery/top/top/all/1';
 
 const access_token = '116ebca7c18601ce49a84fefa9dc6255a0380312';
 const client_id = '64e906336192044';
 
 const getUrl = () => {
     if(tagFilter === null){
-        return `https://api.imgur.com/3/topics/${topicId}/time/${pageNumber}`;
-        // return 'https://api.imgur.com/3/gallery/top/top/all/' + pageNumber;
+        return `https://api.imgur.com/3/gallery/top/top/all`;
     }
     else{
-
-        return 'https://api.imgur.com/3/gallery/t/' + tagFilter + '/top/all/' + pageNumber;
+        return `https://api.imgur.com/3/gallery/t/${tagFilter}/top/all/${pageNumber}`;
     }
 };
 
-let getInfo = (type, url, removeOldPosts = false) => {
+let getInfo = (type, url) => {
     console.log(`%c send query ${type} `,  'color: white; background: brown');
     console.log('url = ' + url);
-    // let auth = bearerAuth ? access_token : client_id;
-    // let authType = !bearerAuth ? 'Bearer' : 'Client-ID';
-
-    // if(removeOldPosts) store.dispatch({type: 'DELETE_ALL_POSTS'});
 
     fetch(url, {
         "async": true,
@@ -55,29 +44,13 @@ let getInfo = (type, url, removeOldPosts = false) => {
             }
 
             else if (type === 'SHOW_TAG'){
+                store.dispatch({type: 'DELETE_POST_LIST'});
                 result = responseJson.data.items;
+
             }
 
             else if(type === 'ADDING_PAGE' && !(tagFilter === null)){
                 result = responseJson.data.items;
-            }
-
-            // if(topicFilter !== null){
-            //     result = result.filter((item) =>  item.topic == topicFilter);
-            // }
-            if(type === 'SHOW_TOPIC'){
-                tagFilter = null;
-
-                console.log(`%c DELETE_TAG_LIST `,  'color: white; background: red');
-                store.dispatch({type: 'DELETE_TAG_LIST'});
-                console.log(`%c CREATE_NEW_TAG_LIST `,  'color: white; background: green');
-                store.dispatch({type: 'CREATE_NEW_TAG_LIST', payload:result});
-            }
-
-
-            if(type === 'CREATE_POST_LIST'){
-                console.log(`%c CREATE_NEW_TAG_LIST `,  'color: white; background: blue');
-                store.dispatch({type: 'CREATE_NEW_TAG_LIST', payload:result});
             }
 
             if(type === 'ADDING_PAGE'){
@@ -94,13 +67,12 @@ let getInfo = (type, url, removeOldPosts = false) => {
         });
 };
 
-getInfo('CREATE_TOPIC_LIST', url_post_list);
+getInfo('CREATE_TAG_LIST', url_tag_list);
 getInfo('CREATE_POST_LIST', getUrl());
 
 
 let initialState = {
     'posts':[],
-    'list':[],
     'tags':[]
 };
 
@@ -110,115 +82,38 @@ let posts = (state = initialState, action) => {
         return {
             'posts': [...action.payload],
             'tags': state.tags,
-            'list': state.list
         }
     }
 
-    else if (action.type === "CREATE_TOPIC_LIST") {
+    if (action.type === "DELETE_POST_LIST") {
         return {
-            'posts': state.posts,
+            'posts': [],
             'tags': state.tags,
-            'list': [...action.payload]
         }
     }
 
-    else if (action.type === "UPDATE_TAG_LIST") {
-
-        let posts = action.payload;
-        let obj = {};
-
-        posts.forEach((post) => {
-            post.tags.forEach((tag)=>{
-                obj[tag.name] = '1';
-            })
-        });
-
-        console.log(state.tags);
-        console.log(Object.keys(obj));
-
+    else if (action.type === "CREATE_TAG_LIST") {
         return {
             'posts': state.posts,
-            'list': state.list,
-            'tags': state.tags.concat(Object.keys(obj)).filter((v, i, a) => a.indexOf(v) === i)
+            'tags': [...action.payload]
         }
     }
 
-    else if (action.type === "DELETE_TAG_LIST") {
-
-        return {
-            'posts': state.posts,
-            'list': state.list,
-            'tags': []
-        }
-    }
-
-    else if (action.type === "CREATE_NEW_TAG_LIST") {
-
-        let posts = action.payload;
-        console.log(posts);
-        let obj = {};
-
-        posts.forEach((post) => {
-            post.tags.forEach((tag)=>{
-                obj[tag.name] = '1';
-            })
-        });
-
-        console.log(Object.keys(obj));
-
-        return {
-            'posts': state.posts,
-            'list': state.list,
-            'tags': Object.keys(obj)
-        }
-    }
-
-    else if (action.type === "SHOW_TOPIC") {
-        console.log('show topic');
+    else if (action.type === "SHOW_TAG") {
+        console.log('show tag');
         console.log(action.payload);
         return {
             'posts': action.payload,
             'tags': state.tags,
-            'list': state.list
-        }
-    }
-
-    else if (action.type === "CHANGE_TOPIC") {
-        console.log('change topic filter');
-        console.log(action.payload);
-
-        topicId = action.payload;
-
-        getInfo('SHOW_TOPIC', getUrl(), true);
-
-        return {
-            'posts': [],
-            'tags': state.tags,
-            'list': state.list
+            // 'list': state.list
         }
     }
 
     else if (action.type === "CHANGE_TAG") {
         console.log('change tag filter');
-        // console.log(state.posts);
         tagFilter = action.payload;
-
-        let postsFilter = [];
-        state.posts.forEach((post) =>  {
-            post.tags.forEach((tag) => {
-                if(tag.name == action.payload){
-                    postsFilter.push(post);
-                }
-            });
-        });
-
-        // getInfo('SHOW_TAG', getUrl());
-        console.log(postsFilter);
-        return {
-            'tags': state.tags,
-            'list': state.list,
-            'posts': postsFilter,
-        }
+        console.log('tag filter = ' + tagFilter);
+        getInfo('SHOW_TAG', getUrl());
     }
 
     else if (action.type === "ADDING_PAGE") {
@@ -228,9 +123,7 @@ let posts = (state = initialState, action) => {
         return {
             'posts': state.posts.concat(action.payload),
             'tags': state.tags,
-            'list': state.list
         }
-
     }
 
     else if (action.type === "GET_NEXT_PAGE") {

@@ -25,8 +25,6 @@ class PostItem extends Component {
             .then((response) => response.json())
             .then((responseJson) => {
                 this.setState({[stateVar]: responseJson.data});
-                console.log(`%c ${stateVar} `,  'color: white; background: green');
-                console.log(responseJson.data)
             })
             .catch((error) => {
                 console.error(error);
@@ -44,7 +42,6 @@ class PostItem extends Component {
 
     render() {
         let date = new Date(parseInt(this.state.post.datetime * 1000, 10)).toLocaleString();
-        // let title = this.state.post.title ? this.state.post.title : 'No title';
         let images;
         let comments;
         let tags;
@@ -64,11 +61,9 @@ class PostItem extends Component {
         }
         else {
             images = <img src={this.state.post.link} alt={this.state.post.link}/>;
-
         }
 
         if(this.state.comments){
-            console.log(this.state.comments);
             comments = this.state.comments.map((item) => (
                 <li key={item.id}>
                     <h4>{item.author}</h4>
