@@ -3,6 +3,7 @@ import { createStore } from "redux";
 import { Provider } from "react-redux";
 import Posts from "./Posts";
 import './App.css'
+
 let topicId = 2;
 let pageNumber = 1;
 let tagFilter = null;
@@ -27,29 +28,6 @@ const getUrl = () => {
         return 'https://api.imgur.com/3/gallery/t/' + tagFilter + '/top/all/' + pageNumber;
     }
 };
-
-const getUrlByTag = () =>{
-    return 'https://api.imgur.com/3/gallery/t/' + tagFilter + '/top/all';
-};
-
-const getUrlPosts = (pageNumber = 1) =>{
-    return 'https://api.imgur.com/3/gallery/top/top/all/' + pageNumber;
-};
-
-let getRequestUrl = () => {
-    // return 'https://api.imgur.com/3/account/imburSol/album/DdzUa';
-    // return 'https://api.imgur.com/3/gallery/imburSol/top'
-    // return 'https://api.imgur.com/3/gallery/user/rising';
-
-    return 'https://api.imgur.com/3/gallery/user/rising/all/1';
-    //     return 'https://api.imgur.com/3/gallery/bGSpH/comments';
-
-    // return 'https://api.imgur.com/3/account/imburSol/images';
-    // return 'https://api.imgur.com/3/account/imburSol/submissions/1';
-    // return 'https://api.imgur.com/3/account/imburSol/favorites/1';
-    //return `https://api.imgur.com/3/topics/${topicId}/time/${pageNumber}`;
-};
-
 
 let getInfo = (type, url, removeOldPosts = false) => {
     console.log(`%c send query ${type} `,  'color: white; background: brown');
@@ -208,16 +186,10 @@ let posts = (state = initialState, action) => {
     else if (action.type === "CHANGE_TOPIC") {
         console.log('change topic filter');
         console.log(action.payload);
-        console.log(topicId);
-        // showTopic(action.payload);
-        // topicFilter = action.payload;
+
         topicId = action.payload;
 
         getInfo('SHOW_TOPIC', getUrl(), true);
-
-        // let resPosts = state.posts.filter((post) =>  post.topic == action.payload);
-
-        // console.log(resPosts);
 
         return {
             'posts': [],
@@ -225,16 +197,6 @@ let posts = (state = initialState, action) => {
             'list': state.list
         }
     }
-
-    // else if (action.type === "SHOW_TAG") {
-    //     console.log('show tag');
-    //     console.log(action.payload);
-    //     return {
-    //         'posts': action.payload,
-    //         'tags': state.tags,
-    //         'list': state.list
-    //     }
-    // }
 
     else if (action.type === "CHANGE_TAG") {
         console.log('change tag filter');
@@ -271,14 +233,11 @@ let posts = (state = initialState, action) => {
 
     }
 
-
     else if (action.type === "GET_NEXT_PAGE") {
         isloading = true;
         console.log('GET_NEXT_PAGE');
-        // setLoadingPage(true);
         pageNumber++;
         getInfo('ADDING_PAGE', getUrl());
-        // getNextPage();
     }
 
     return state;
