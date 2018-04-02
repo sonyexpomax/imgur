@@ -12,7 +12,8 @@ const client_id = '64e906336192044';
 
 const getUrl = () => {
     if(tagFilter === null){
-        return `https://api.imgur.com/3/gallery/top/top/all`;
+        console.log(`https://api.imgur.com/3/gallery/top/top/all/${pageNumber}`);
+        return `https://api.imgur.com/3/gallery/top/top/all/${pageNumber}`;
     }
     else{
         return `https://api.imgur.com/3/gallery/t/${tagFilter}/top/all/${pageNumber}`;
